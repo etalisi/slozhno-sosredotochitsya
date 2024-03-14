@@ -5,7 +5,8 @@
   background-color: var(--bg-color);
   font-size: 18px;
   font-family: var(--main-font);
-  padding: 10px;
+  padding-inline-start: 10px;
+  padding-inline-end: 10px;
   position: relative;
   background-image: var(--bg-image);
   background-repeat: no-repeat;
@@ -17,7 +18,7 @@
 /**Header*/
 
 .header {
-  block-size: 100%;
+  block-size: 100vh;
   display: grid;
   grid-template-rows: 1fr auto 1fr;
   grid-template-areas:
@@ -26,6 +27,8 @@
     "subtitle subtitle subtitle";
   position: relative;
   align-items: center;
+  padding-block-start: 10px;
+  padding-block-end: 10px;
 }
 
 .decorated-zone::before {
@@ -37,7 +40,7 @@
   border-block-end: none;
   border-inline-start: none;
   position: absolute;
-  top: 0px;
+  top: 10px;
   inset-inline-end: 0px;
 }
 
@@ -50,7 +53,7 @@
   border-block-start: none;
   border-inline-end: none;
   position: absolute;
-  bottom: 0px;
+  bottom: 10px;
   inset-inline-start: 0px;
 }
 
@@ -115,13 +118,13 @@
 
 .header__title {
   grid-area: title;
-  line-height: 6rem;
 }
 
 .title {
   color: var(--header-text-color);
   font-size: clamp(7.25rem, 7.0115rem + 1.0178vw, 7.5rem);
   text-shadow: 4px 4px 0 var(--header-text-shadow);
+  line-height: 6rem;
 }
 
 .header__subtitle {
@@ -137,6 +140,10 @@
 
 /* *Section */
 .section {
+  padding-block-start: 40px;
+}
+
+.section + .section {
   padding-block-start: 50px;
 }
 
@@ -187,19 +194,21 @@
   display: grid;
   gap: 10px;
   padding-block-start: 10px;
+  padding-block-end: 40px;
 }
 
 .image {
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
   inline-size: 100%;
+  display: block;
 }
 
 /**Footer*/
 
 .footer {
-  margin-block-start: 40px;
-  min-block-size: 100vh;
+  block-size: 100vh;
+  padding: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -225,11 +234,22 @@
 
 @media (width >= 768px) {
   .page {
-    padding: 20px;
+    padding-inline-start: 20px;
+    padding-inline-end: 20px;
   }
 
   .header {
-    min-block-size: calc(100vh - 40px);
+    padding-block-start: 20px;
+    padding-block-end: 20px;
+    block-size: 100vh;
+  }
+
+  .decorated-zone::before {
+    top: 20px;
+  }
+  
+  .decorated-zone::after {
+    bottom: 20px;
   }
 
   .header__title {
@@ -243,8 +263,12 @@
   /* *Section */
 
   .section {
-    padding-block-start: 80px;
+    padding-block-start: 60px;
     display: grid;
+  }
+
+  .section + .section {
+    padding-block-start: 80px;
   }
 
   .section:nth-child(odd) {
@@ -267,10 +291,9 @@
 
   .images {
     display: grid;
-    grid-template-rows: 3, 1fr;
-    grid-template-columns: 3, 1fr;
     gap: 20px;
     padding-block-start: 20px;
+    padding-block-end: 60px;
     grid-template-areas:
       "image--1 image--1 image--2"
       "image--3 image--4 image--2"
@@ -305,7 +328,7 @@
   /**Footer*/
 
   .footer {
-    margin-block-start: 60px;
+    padding-block-start: 20px;
   }
 
   .footer .decorated-zone::before {
