@@ -4,7 +4,7 @@
   /* сохраните в разметке и стилях класс page. На его основе работает скрипт. */
   background-color: var(--bg-color);
   font-size: 18px;
-  font-family: var(--main-font);
+  font-family: var(--main-font), monospace;
   padding-inline-start: 10px;
   padding-inline-end: 10px;
   position: relative;
@@ -40,7 +40,7 @@
   border-block-end: none;
   border-inline-start: none;
   position: absolute;
-  top: 10px;
+  inset-block-start: 10px;
   inset-inline-end: 0px;
 }
 
@@ -53,18 +53,14 @@
   border-block-start: none;
   border-inline-end: none;
   position: absolute;
-  bottom: 10px;
+  inset-block-end: 10px;
   inset-inline-start: 0px;
-}
-
-.header__theme-menu {
-  grid-area: menu;
 }
 
 .decoration {
   color: var(--accent-color);
   position: absolute;
-  top: 0px;
+  inset-block-start: 10px;
   inset-inline-end: 9px;
   display: block;
 }
@@ -79,6 +75,10 @@
   border-radius: 50px;
   margin-inline-start: 10px;
   margin-block-end: 2px;
+}
+
+.header__theme-menu {
+  grid-area: menu;
 }
 
 .header__theme-menu-list {
@@ -96,10 +96,11 @@
   padding: 1.5px 13px 4px;
   color: var(--button-color);
   line-height: 18px;
+  transition: outline 0.5s;
 }
 
 .header__theme-menu-button_active {
-  outline: solid 1px var(--button-color);
+  outline: var(--button-color) solid 1px;
   pointer-events: none;
 }
 
@@ -220,16 +221,6 @@
   text-shadow: 2px 2px 0 var(--header-text-shadow);
 }
 
-.footer .decorated-zone::before {
-  top: 10px;
-  inset-inline-end: 0px;
-}
-
-.footer .decorated-zone::after {
-  bottom: 12px;
-  inset-inline-start: 0px;
-}
-
 /* *Media >=768 */
 
 @media (width >= 768px) {
@@ -241,15 +232,23 @@
   .header {
     padding-block-start: 20px;
     padding-block-end: 20px;
-    block-size: 100vh;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      ". menu"
+      "title title"
+      ". subtitle";
   }
 
   .decorated-zone::before {
-    top: 20px;
+    inset-block-start: 20px;
   }
-  
+
   .decorated-zone::after {
-    bottom: 20px;
+    inset-block-end: 20px;
+  }
+
+  .decoration {
+    inset-block-start: 20px;
   }
 
   .header__title {
@@ -276,6 +275,23 @@
     gap: 20px;
   }
 
+  .section:nth-child(even) {
+    grid-template-rows: repeat(2, auto);
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-areas:
+      "section__title . ."
+      "list list list";
+    gap: 20px;
+  }
+
+  .section:nth-child(even) .section__title {
+    grid-area: section__title;
+  }
+
+  .section:nth-child(even) .list {
+    grid-area: list;
+  }
+
   .article {
     padding-block-start: 0px;
   }
@@ -290,84 +306,44 @@
   }
 
   .images {
-    display: grid;
     gap: 20px;
-    padding-block-start: 20px;
+    padding-block-start: 0px;
     padding-block-end: 60px;
+    grid-template-columns: repeat(3, 1fr);
     grid-template-areas:
-      "image--1 image--1 image--2"
-      "image--3 image--4 image--2"
-      "image--3 image--5 image--5";
+      "sunset sunset ice-cream"
+      "tape books ice-cream"
+      "tape street street";
   }
 
   .image {
-    object-fit: cover;
     block-size: 100%;
   }
 
-  .image--1 {
-    grid-area: image--1;
+  .sunset {
+    grid-area: sunset;
   }
 
-  .image--2 {
-    grid-area: image--2;
+  .ice-cream {
+    grid-area: ice-cream;
   }
 
-  .image--3 {
-    grid-area: image--3;
+  .tape {
+    grid-area: tape;
   }
 
-  .image--4 {
-    grid-area: image--4;
+  .books {
+    grid-area: books;
   }
 
-  .image--5 {
-    grid-area: image--5;
+  .street {
+    grid-area: street;
   }
 
   /**Footer*/
 
   .footer {
     padding-block-start: 20px;
-  }
-
-  .footer .decorated-zone::before {
-    top: 20px;
-    inset-inline-end: 0px;
-  }
-
-  .footer .decorated-zone::after {
-    bottom: 20px;
-    inset-inline-start: 0px;
-  }
-}
-
-/* *Media 768-1024 */
-
-@media (768px <= width < 1024px) {
-  .header {
-    grid-template-rows: 1fr auto 1fr;
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas:
-      ". menu"
-      "title title"
-      ". subtitle";
-  }
-
-  /* *Section */
-
-  .section:nth-child(even) {
-    grid-template-rows: auto auto auto auto;
-    grid-template-columns: 1fr 1fr 2fr;
-  }
-
-  .section:nth-child(even) .article {
-    grid-column: span 3;
-    padding-block-start: 20px;
-  }
-
-  .section:nth-child(even) .section__title {
-    grid-column: span 1;
   }
 }
 
@@ -378,10 +354,7 @@
       "menu menu"
       "title title"
       ". subtitle";
-    position: relative;
-    align-items: center;
     grid-template-rows: 1fr clamp(7.5rem, 0.5625rem + 14.4531vw, 8rem) 1fr;
-    grid-template-columns: 1fr 1fr;
   }
 
   .header__theme-menu {
@@ -390,7 +363,6 @@
   }
 
   .header__theme-menu-list {
-    display: flex;
     flex-direction: row;
   }
 
@@ -400,36 +372,15 @@
     gap: 10px;
   }
 
-  .section:nth-child(even) {
-    grid-template-rows: auto auto;
-    grid-template-columns: 1fr 1fr 1fr;
+  .section:nth-child(even) .list {
+    display: grid;
     gap: 20px;
-    grid-template-areas:
-      "section__title . ."
-      "article--1 article--2 article--3";
+    grid-template-rows: repeat(1, auto);
+    grid-template-columns: repeat(3, 1fr);
   }
 
-  .section:nth-child(even) .section__title {
-    grid-area: section__title;
-  }
-
-  .article--1 {
-    grid-area: article--1;
-  }
-
-  .article--2 {
-    grid-area: article--2;
-  }
-
-  .article--3 {
-    grid-area: article--3;
-  }
-
-  .section:nth-child(even) .article {
-    padding-block-start: 0px;
-  }
-
-  .images {
+  .section:nth-child(even) .list .list-item {
+    grid-column: span 1;
     padding-block-start: 0px;
   }
 }
